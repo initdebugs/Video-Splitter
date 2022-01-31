@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import PySimpleGUI as sg
 import cv2
 import os.path
