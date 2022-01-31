@@ -1,3 +1,4 @@
+#Developed by @Initdebugs
 import PySimpleGUI as sg
 import cv2
 import os.path
@@ -31,7 +32,7 @@ layout = [
 ]
 
 window = sg.Window("Video Splitter", layout)
-
+folderCount = 0
 while True:
     event, values = window.read()
 
@@ -67,11 +68,19 @@ while True:
             frameCount =  int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
             outputDir = ("Frames")
-            checkDir = os.path.isdir(outputDir)
+            dirName = outputDir + str(folderCount)
+            checkDir = os.path.isdir(dirName)
+            
+            while checkDir:
+                dirName = outputDir + str(folderCount)
+                if not checkDir == os.path.isdir(dirName):
+                    checkDir = False
+                    break
+                folderCount+=1
 
             # If folder doesn't exist, then create it.
             if not checkDir:
-                os.makedirs(outputDir)
+                os.makedirs(dirName)
                 print("Created folder: ", outputDir)
 
             while True:
@@ -83,7 +92,7 @@ while True:
                     break
                 success,image = cap.read()
                 if success == True:
-                    cv2.imwrite("Frames/frame%d.jpg" % count, image)     # save frame as JPEG file      
+                    cv2.imwrite(dirName+"/frame%d.jpg" % count, image)     # save frame as JPEG file      
                     print('Read a new frame: ', success)
 
                     count += frames
