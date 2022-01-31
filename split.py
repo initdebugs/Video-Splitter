@@ -7,7 +7,7 @@ file_selection = [
     [
         sg.T("Select video", key="input"),
         sg.In(size=(25, 1), enable_events=True, key="-VIDEO-"),
-        sg.FileBrowse(),
+        sg.FileBrowse(file_types=(("MP4 files", "*.mp4"),)),
         sg.T("Welcome! Select a video to begin...", key="splitStatus"),
     ]
 ]
@@ -40,11 +40,12 @@ while True:
         break
     if event == "Start":
         filename = values["-VIDEO-"]
-
         if filename == "":
             window["splitStatus"].update("Please select a video first...")
             continue
         else:
+            if not filename.endswith(".mp4"):
+                continue
             window["splitStatus"].update("Starting...")
     
             frames = 0
@@ -101,5 +102,3 @@ while True:
                 else:
                     window["splitStatus"].update("Done.")
                     break
-                
-# window.close()
